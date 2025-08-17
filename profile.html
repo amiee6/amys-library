@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile - Amy's Fun & Cute Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+    }
+    body {
+      background: #FFEBE3; /* Light Peach */
+      color: #7C5D80; /* Dark Mauve */
+      display: flex;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      background: #D4B1E2; /* Light Lavender */
+      width: 250px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      padding-top: 2rem;
+      box-shadow: 2px 0 10px rgba(124,93,128,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar.closed {
+      left: -260px;
+    }
+    .sidebar h2 {
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: #7C5D80;
+    }
+    .nav-list {
+      list-style: none;
+      width: 100%;
+      padding: 0 1rem;
+    }
+    .nav-list li {
+      margin-bottom: 1.8rem;
+      text-align: center;
+      cursor: pointer;
+      padding: 0.8rem 0;
+      border-radius: 30px;
+      transition: background 0.3s ease;
+    }
+    .nav-list li:hover {
+      background: #FFC1CC; /* Soft Pink hover */
+      color: #FFF;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(255,193,204,0.6);
+    }
+    .nav-list li svg {
+      vertical-align: middle;
+      margin-right: 0.6rem;
+      fill: #7C5D80;
+      transition: fill 0.3s ease;
+    }
+    .nav-list li:hover svg {
+      fill: #FFF;
+    }
+    .nav-list li.active {
+      background: #B8E4D9; /* Mint Green highlight */
+      color: #7C5D80;
+      font-weight: 700;
+      box-shadow: 0 4px 8px rgba(184, 228, 217, 0.7);
+    }
+
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      background: #B8E4D9; /* Mint Green */
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 25px;
+      cursor: pointer;
+      position: fixed;
+      top: 1rem;
+      left: 260px;
+      transition: left 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #7C5D80;
+      box-shadow: 0 4px 8px rgba(184, 228, 217, 0.7);
+      z-index: 1100;
+    }
+    .sidebar.closed + .sidebar-toggle {
+      left: 1rem;
+    }
+
+    /* Main content */
+    main {
+      margin-left: 250px;
+      padding: 2rem 3rem;
+      width: 100%;
+      transition: margin-left 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+    .sidebar.closed ~ main {
+      margin-left: 0;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Heading */
+    main h1 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: #7C5D80;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* Profile Top Section */
+    .profile-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 2.5rem;
+      max-width: 900px;
+      width: 100%;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    /* Profile photo section */
+    .profile-photo-section {
+      flex-shrink: 0;
+      min-width: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .photo-circle {
+      width: 140px;
+      height: 140px;
+      background: #FFC1CC;
+      border-radius: 50%;
+      box-shadow: 0 0 0 6px #FFEBE3;
+      color: #7C5D80;
+      font-size: 5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+    .photo-circle:hover {
+      box-shadow: 0 0 12px 8px #f8aebb;
+    }
+    .photo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .mbti-box {
+      border: 2px solid #7C5D80;
+      border-radius: 12px;
+      padding: 6px 16px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #7C5D80;
+      user-select: none;
+      text-align: center;
+      width: 100px;
+    }
+
+    /* Location, Age, Occupation outlined boxes stacked vertically */
+    .profile-info-boxes {
+      width: 100%;
+      max-width: 180px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .info-box-outlined {
+      border: 2px solid #7C5D80;
+      border-radius: 15px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #7C5D80;
+      text-align: center;
+      user-select: none;
+      background: transparent;
+    }
+
+    /* Bio section */
+    .bio-section {
+      flex-grow: 1;
+      min-width: 280px;
+      max-width: 600px;
+      background: #FFF4B2; /* Pastel Yellow */
+      border-radius: 20px;
+      padding: 1.8rem 2rem;
+      box-shadow: 0 4px 10px rgba(255, 244, 178, 0.7);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #7C5D80;
+      white-space: pre-wrap;
+      user-select: text;
+    }
+
+    /* Genres */
+    .genres-section {
+      max-width: 900px;
+      width: 100%;
+      margin-bottom: 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 18px;
+      align-items: center;
+      justify-content: center;
+    }
+    .genre-box {
+      background: #D4B1E2;
+      border-radius: 30px;
+      padding: 8px 18px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #7C5D80;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      box-shadow: 0 4px 8px rgba(124, 93, 128, 0.2);
+    }
+    /* Sparkle separator */
+    .sparkle-sep {
+      font-size: 1.4rem;
+      color: #FFC1CC;
+      user-select: none;
+      margin: 0 8px;
+      line-height: 1;
+    }
+	body {
+    background: #FFEBE3;
+    font-family: 'Quicksand', sans-serif;
+    color: #7C5D80;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 2rem;
+  }
+
+  .chart-wrapper {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    max-width: 700px;
+    width: 100%;
+    background: #FFF4B2;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 6px 18px rgba(255, 244, 178, 0.6);
+  }
+
+  /* The pie chart */
+  .pie-chart {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background:
+      conic-gradient(
+        #FFC1CC 0% 25%,
+        #B8E4D9 25% 40%,
+        #D4B1E2 40% 55%,
+        #FFF4B2 55% 75%,
+        #FFEBE3 75% 85%,
+        #7C5D80 85% 100%
+      );
+    box-shadow: 0 0 12px rgba(124, 93, 128, 0.35);
+  }
+
+  /* Donut hole */
+  .pie-chart::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    background: #FFEBE3;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(124, 93, 128, 0.15);
+  }
+
+  /* Labels container */
+  .labels {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Individual label */
+  .label-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #4A2F51; /* Slightly darker for readability */
+  }
+
+  /* Color indicator squares */
+  .color-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  }
+  .color-1 { background: #FFC1CC; }
+  .color-2 { background: #B8E4D9; }
+  .color-3 { background: #D4B1E2; }
+  .color-4 { background: #FFF4B2; }
+  .color-5 { background: #FFEBE3; border: 1.25px solid #7C5D80; }
+  .color-6 { background: #7C5D80; }
+
+  /* Percent circle next to label */
+  .percent-circle {
+    background: #D4B1E2;
+    color: #7C5D80;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 0 6px rgba(184, 228, 217, 0.8);
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 600px) {
+    body {
+      padding: 1rem;
+    }
+    .chart-wrapper {
+      flex-direction: column;
+      padding: 1.5rem;
+    }
+    .pie-chart {
+      width: 240px;
+      height: 240px;
+    }
+  }
+  body {
+    background: #FFEBE3;
+    font-family: 'Quicksand', sans-serif;
+    color: #7C5D80;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+  }
+  h2 {
+    margin-bottom: 1rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+  .pie-chart-container {
+    position: relative;
+    width: 360px;
+    height: 360px;
+    border-radius: 80%;
+    background: conic-gradient(
+      #FFC1CC 0% 25%,            /* Artistic Creativity - soft pink */
+      #B8E4D9 25% 40%,           /* Tech Adaptability - mint green */
+      #D4B1E2 40% 55%,           /* Multitasking & Routine Building - lavender */
+      #FFF4B2 55% 75%,           /* Quick Learner - pastel yellow */
+      #FFEBE3 75% 85%,           /* Deep Focus Through Music - light peach */
+      #7C5D80 85% 100%           /* Thoughtful Communication - dark mauve */
+    );
+    box-shadow: 0 0 15px rgba(124, 93, 128, 0.3);
+  }
+  /* Center circle to create donut effect */
+  .pie-chart-container::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    background: #FFEBE3;
+    border-radius: 50%;
+    box-shadow: inset 0 0 8px rgba(124, 93, 128, 0.2);
+  }
+  /* Labels inside the chart */
+  .label {
+    position: absolute;
+    font-weight: 700;
+    color: #4A2F51;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  /* Position labels using percentages and rotated angles */
+  /* Use approximate angles based on slice midpoints for placement */
+
+  /* Artistic Creativity 25% (0 to 90 deg) midpoint 45 */
+  .label.artistic {
+    top: 20%;
+    left: 65%;
+  }
+  /* Tech Adaptability 15% (90 to 144 deg) midpoint 117 */
+  .label.tech {
+    top: 10%;
+    left: 30%;
+  }
+  /* Multitasking 15% (144 to 198 deg) midpoint 171 */
+  .label.multi {
+    top: 45%;
+    left: 10%;
+  }
+  /* Quick Learner 20% (198 to 270 deg) midpoint 234 */
+  .label.quick {
+    top: 80%;
+    left: 16%;
+  }
+  /* Deep Focus 10% (270 to 306 deg) midpoint 288 */
+  .label.deep {
+    top: 89%;
+    left: 52%;
+  }
+  /* Thoughtful Comm 15% (306 to 360 deg) midpoint 333 */
+  .label.comm {
+    top: 65%;
+    left: 75%;
+  }
+
+  /* Label colors to match slice colors */
+  .label.artistic { color: #B34D66; }
+  .label.tech { color: #3E8A7B; }
+  .label.multi { color: #7F6BA0; }
+  .label.quick { color: #CCBB5E; }
+  .label.deep { color: #B3A387; }
+  .label.comm { color: #56384F; }
+
+  /* Legend styling */
+  .legend {
+    margin-top: 2rem;
+    max-width: 320px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+  }
+  .legend-artistic { background: #FFC1CC; }
+  .legend-tech { background: #B8E4D9; }
+  .legend-multi { background: #D4B1E2; }
+  .legend-quick { background: #FFF4B2; }
+  .legend-deep { background: #FFEBE3; border: 1px solid #7C5D80; }
+  .legend-comm { background: #7C5D80; }
+
+  .legend-text {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+    /* Likes and Dislikes containers */
+    .likes-dislikes-container {
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    .likes-box, .dislikes-box {
+      background: #FFF4B2;
+      border-radius: 20px;
+      padding: 1.6rem 2rem;
+      box-shadow: 0 4px 10px rgba(255, 244, 178, 0.7);
+      flex: 1 1 320px;
+      color: #7C5D80;
+    }
+    .likes-box h3, .dislikes-box h3 {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .likes-dislikes-list {
+      list-style: disc;
+      padding-left: 20px;
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.4;
+      user-select: text;
+    }
+
+    /* Likes and dislikes icons (optional emoji style) for each item */
+    .likes-dislikes-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Social media section */
+    .social-media-section {
+      max-width: 900px;
+      width: 100%;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    .social-media-section h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #7C5D80;
+    }
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .social-icon {
+      background: #D4B1E2;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #7C5D80;
+      text-decoration: none;
+      font-size: 24px;
+      box-shadow: 0 4px 8px rgba(124, 93, 128, 0.3);
+      transition: background 0.3s ease, color 0.3s ease;
+      cursor: pointer;
+    }
+    .social-icon:hover {
+      background: #B8E4D9;
+      color: #fff;
+    }
+
+    /* Software skills, hobbies, interests section */
+    .info-sections {
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .info-section-box {
+      background: #FFF4B2;
+      border-radius: 20px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 4px 10px rgba(255, 244, 178, 0.7);
+      width: 320px;
+      color: #7C5D80;
+    }
+    .info-section-box h3 {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .info-list {
+      list-style: none;
+      padding-left: 0;
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.4;
+      user-select: text;
+    }
+    .info-list li {
+      padding-left: 1.3em;
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+    .info-list li::before {
+      content: "•";
+      color: #7C5D80;
+      position: absolute;
+      left: 0;
+    }
+
+    /* Utilities for spacing */
+    .mb-8 {
+      margin-bottom: 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      main {
+        padding: 1.5rem 1.2rem;
+      }
+      .profile-top {
+        flex-direction: column;
+        align-items: center;
+      }
+      .bio-section {
+        max-width: 100%;
+      }
+      .profile-photo-section {
+        max-width: 180px;
+      }
+      .profile-info-boxes {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        max-width: 600px;
+      }
+      .info-box-outlined {
+        flex-grow: 1;
+        max-width: 140px;
+      }
+      .info-sections {
+        flex-direction: column;
+        align-items: center;
+      }
+      .info-section-box {
+        width: 100%;
+        max-width: 400px;
+      }
+      .genres-section {
+        justify-content: center;
+      }
+      .likes-dislikes-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .likes-box, .dislikes-box {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" id="sidebar" role="navigation" aria-label="Main sidebar">
+    <h2>My Library</h2>
+    <ul class="nav-list">
+      <li id="nav-home">
+        <a href="home.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 3.293l6 6V13a1 1 0 0 1-1 1h-3v-4H6v4H3a1 1 0 0 1-1-1v-3.707l6-6z"/><path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6 6A1 1 0 0 1 14 9H2a1 1 0 0 1-.707-1.707l6-6z"/></svg>
+          Home
+        </a>
+      </li>
+      <li id="nav-bookshelf">
+        <a href="bookshelf.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M2 2v12h12V2H2zm11 11H3V3h10v10z"/><path d="M4 4h8v2H4V4z"/><path d="M4 7h8v2H4V7z"/></svg>
+          Bookshelf
+        </a>
+      </li>
+      <li id="nav-to-read">
+        <a href="to-read.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M9 14V2h1v12H9z"/><path d="M5 12l7-4-7-4v8z"/></svg>
+          To Read
+        </a>
+      </li>
+      <li id="nav-favourites">
+        <a href="favourites.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M3 8l5-3 5 3-5 3-5-3z"/><path d="M3 16V8l5 3 5-3v8H3z"/></svg>
+          Favourites
+        </a>
+      </li>
+      <li id="nav-profile" class="active">
+        <a href="profile.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/><path d="M2 14s1-4 6-4 6 4 6 4H2z"/></svg>
+          Profile
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+
+  <main>
+    <h1>Amy's Profile</h1>
+
+    <!-- Profile top section: photo + MBTI + info boxes + bio -->
+    <section class="profile-top" aria-label="Profile top section">
+      <!-- Left: photo, MBTI, info boxes -->
+      <div class="profile-photo-section" aria-label="Profile photo and info">
+        <div class="photo-circle" title="Click to add photo" id="photoCircle" role="img" aria-label="Profile photo placeholder">👤</div>
+        <div class="mbti-box" aria-label="MBTI personality type">INFP</div>
+        <div class="profile-info-boxes" aria-label="Location, Age, and Occupation">
+          <div class="info-box-outlined" tabindex="0" aria-label="Location">South Africa</div>
+          <div class="info-box-outlined" tabindex="0" aria-label="Age">18</div>
+          <div class="info-box-outlined" tabindex="0" aria-label="Occupation">High School Student</div>
+        </div>
+      </div>
+
+      <!-- Right: bio -->
+      <div class="bio-section" aria-label="User biography" tabindex="0">
+Hi! I’m Amy — a creative soul with a passion for art, design, and learning new things. I enjoy drawing, exploring visual styles, and diving into tech whenever I can. I’m currently in high school, working hard to balance my studies with my interests in graphic design, languages, and self-growth. I believe in staying curious, being kind, and always challenging myself to grow. 🌸✨
+      </div>
+    </section>
+
+    <!-- Genres with rounded boxes and sparkles -->
+    <section class="genres-section" aria-label="Favorite book genres">
+      <div class="genre-box">📚💖 My Book Genres</div>
+      <div class="genre-box">✨ Fantasy 🪄</div>
+      <span class="sparkle-sep" aria-hidden="true">✦</span>
+      <div class="genre-box">🌷 Romance 💌</div>
+      <span class="sparkle-sep" aria-hidden="true">✦</span>
+      <div class="genre-box">🔮 Mystery / Supernatural 🌙</div>
+      <span class="sparkle-sep" aria-hidden="true">✦</span>
+      <div class="genre-box">🍵 Slice of Life 🐇</div>
+      <span class="sparkle-sep" aria-hidden="true">✦</span>
+      <div class="genre-box">🌼 Christian / Faith-based ✝️</div>
+    </section>
+
+    <!-- Abilities with Pie Chart -->
+	<h2>Abilities</h2>
+  <div class="chart-wrapper" role="img" aria-label="Pie chart showing abilities with percentages and legend">
+    <div class="pie-chart"></div>
+
+    <div class="labels" aria-label="Legend for abilities and their percentages">
+      <div class="label-item">
+        <div class="color-box color-1"></div>
+        Artistic Creativity
+        <div class="percent-circle">25%</div>
+      </div>
+      <div class="label-item">
+        <div class="color-box color-2"></div>
+        Tech Adaptability
+        <div class="percent-circle">15%</div>
+      </div>
+      <div class="label-item">
+        <div class="color-box color-3"></div>
+        Multitasking & Routine Building
+        <div class="percent-circle">15%</div>
+      </div>
+      <div class="label-item">
+        <div class="color-box color-4"></div>
+        Quick Learner
+        <div class="percent-circle">20%</div>
+      </div>
+      <div class="label-item">
+        <div class="color-box color-5"></div>
+        Deep Focus Through Music
+        <div class="percent-circle">10%</div>
+      </div>
+      <div class="label-item">
+        <div class="color-box color-6"></div>
+        Thoughtful Communication
+        <div class="percent-circle">15%</div>
+      </div>
+    </div>
+  </div>
+  
+    <!-- Likes and Dislikes side by side -->
+    <section class="likes-dislikes-container" aria-label="Likes and Dislikes">
+      <div class="likes-box" aria-label="Likes">
+        <h3>Your Likes</h3>
+        <ul class="likes-dislikes-list" tabindex="0">
+          <li>Drawing, painting, designing cute or meaningful visuals</li>
+          <li>Aesthetic shows (Winx Club, Totally Spies, anime like Fruits Basket)</li>
+          <li>Music (you listen to it for hours daily)</li>
+          <li>Learning creative tools (like Notion, Canva, etc.)</li>
+          <li>Faith, family, personal growth, and routines that work for you</li>
+          <li>Fashion styles or characters with depth and care</li>
+          <li>Math patterns, when they start to click!</li>
+        </ul>
+      </div>
+      <div class="dislikes-box" aria-label="Dislikes">
+        <h3>Your Dislikes</h3>
+        <ul class="likes-dislikes-list" tabindex="0">
+          <li>Foods that are dry (like bran flakes, tomatoes, spinach, nuts)</li>
+          <li>Overly intense sports (like martial arts or badminton)</li>
+          <li>Feeling rushed or forced into things before you’re ready</li>
+          <li>Studying without purpose or creativity</li>
+          <li>Reading long books unless they’re interesting or visual</li>
+        </ul>
+      </div>
+    </section>
+	
+    <!-- Social Media -->
+    <section class="social-media-section" aria-label="Social media profiles">
+      <h2>Connect with Me</h2>
+      <div class="social-icons">
+        <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram profile">
+          📸
+        </a>
+        <a href="https://www.pinterest.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Pinterest profile">
+          📌
+        </a>
+        <a href="https://wa.me/yournumber" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="WhatsApp chat">
+          💬
+        </a>
+      </div>
+    </section>
+
+    <!-- Software Skills, Hobbies, Interests side-by-side -->
+    <section class="info-sections" aria-label="Software skills, hobbies and interests">
+      <div class="info-section-box" aria-label="Software skills">
+        <h3>Software Skills</h3>
+        <ul class="info-list" tabindex="0">
+          <li>Canva</li>
+          <li>Medibang Paint</li>
+          <li>Krita</li>
+          <li>Ibis Paint X</li>
+          <li>Adobe Express</li>
+          <li>Figma</li>
+          <li>CapCut or InShot</li>
+          <li>Pinterest</li>
+        </ul>
+      </div>
+      <div class="info-section-box" aria-label="Hobbies">
+        <h3>Hobbies</h3>
+        <ul class="info-list" tabindex="0">
+          <li>Drawing and Painting</li>
+          <li>Watching Shows & Anime</li>
+          <li>Listening to Music</li>
+          <li>Learning New Things</li>
+          <li>Playing Piano</li>
+          <li>Designing on Notion</li>
+        </ul>
+      </div>
+      <div class="info-section-box" aria-label="Interests">
+        <h3>Interests</h3>
+        <ul class="info-list" tabindex="0">
+          <li>Art & Design</li>
+          <li>Technology</li>
+          <li>Storytelling & Characters</li>
+          <li>Languages & Writing</li>
+          <li>Learning New Skills</li>
+          <li>Faith & Personal Growth</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Sidebar toggle logic
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('closed');
+      if (sidebar.classList.contains('closed')) {
+        toggleBtn.textContent = '☰';
+      } else {
+        toggleBtn.textContent = '✕';
+      }
+    });
+
+    // Search bar (basic placeholder functionality)
+    const searchInput = document.getElementById('pageSearch');
+    searchInput.addEventListener('input', () => {
+      // Placeholder - no actual filtering implemented for now
+    });
+
+    // Profile photo upload from local file
+    const photoCircle = document.getElementById('photoCircle');
+    photoCircle.style.position = 'relative';
+    photoCircle.style.overflow = 'hidden';
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          photoCircle.innerHTML = `<img src="${e.target.result}" alt="Profile photo" />`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    photoCircle.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = handleImageUpload;
+      input.click();
+    });
+  </script>
+</body>
+</html>
+
+

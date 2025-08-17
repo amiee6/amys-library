@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bookshelf - Fun & Cute Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base (exact same as home page) */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      background: #FFEBE3; /* Light Peach */
+      color: #7C5D80; /* Dark Mauve */
+      display: flex;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: #D4B1E2; /* Light Lavender */
+      width: 250px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      padding-top: 2rem;
+      box-shadow: 2px 0 10px rgba(124, 93, 128, 0.3);
+      transition: left 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .sidebar.closed {
+      left: -260px;
+    }
+
+    .sidebar h2 {
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: #7C5D80;
+    }
+
+    .nav-list {
+      list-style: none;
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    .nav-list li {
+      margin-bottom: 1.8rem;
+      text-align: center;
+      cursor: pointer;
+      padding: 0.8rem 0;
+      border-radius: 30px;
+      transition: background 0.3s ease;
+    }
+
+    .nav-list li:hover {
+      background: #FFC1CC; /* Soft Pink hover */
+      color: #FFF;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(255, 193, 204, 0.6);
+    }
+
+    .nav-list li svg {
+      vertical-align: middle;
+      margin-right: 0.6rem;
+      fill: #7C5D80;
+      transition: fill 0.3s ease;
+    }
+
+    .nav-list li:hover svg {
+      fill: #FFF;
+    }
+
+    /* Active nav item style */
+    .nav-list li.active {
+      background: #B8E4D9; /* Mint Green highlight */
+      color: #7C5D80;
+      font-weight: 700;
+      box-shadow: 0 4px 8px rgba(184, 228, 217, 0.7);
+    }
+
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      background: #B8E4D9; /* Mint Green */
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 25px;
+      cursor: pointer;
+      position: fixed;
+      top: 1rem;
+      left: 260px;
+      transition: left 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #7C5D80;
+      box-shadow: 0 4px 8px rgba(184, 228, 217, 0.7);
+      z-index: 1100;
+    }
+
+    .sidebar.closed + .sidebar-toggle {
+      left: 1rem;
+    }
+
+    /* Main content */
+    main {
+      margin-left: 250px;
+      padding: 2rem;
+      width: 100%;
+      transition: margin-left 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar.closed ~ main {
+      margin-left: 0;
+    }
+
+    /* Headings */
+    main h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #7C5D80;
+      font-weight: 700;
+    }
+
+    main p {
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+      max-width: 700px;
+      text-align: center;
+      color: #7C5D80;
+    }
+
+    /* Bookshelf container */
+    .bookshelf {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* Single book container */
+    .book {
+      background-color: #FFF4B2; /* Pastel Yellow */
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(255, 244, 178, 0.7);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .book:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(255, 244, 178, 0.9);
+    }
+
+    /* Book image placeholder */
+    .book-image {
+      width: 150px;
+      height: 180px;
+      background-color: #FFC1CC; /* Soft Pink */
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #7C5D80;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-align: center;
+      user-select: none;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .book-image img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 15px;
+      display: block;
+    }
+
+    /* Book title */
+    .book-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      color: #7C5D80;
+      text-align: center;
+    }
+
+    /* Progress bar container */
+    .progress-container {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    /* Progress bar background */
+    .progress-bar-bg {
+      background-color: #D4B1E2; /* Light Lavender */
+      border-radius: 20px;
+      width: 100%;
+      height: 18px;
+      overflow: hidden;
+    }
+
+    /* Progress bar fill */
+    .progress-bar-fill {
+      background-color: #B8E4D9; /* Mint Green */
+      height: 100%;
+      width: 0%;
+      border-radius: 20px 0 0 20px;
+      transition: width 0.3s ease;
+    }
+
+    /* Progress percentage text */
+    .progress-percentage {
+      margin-top: 0.4rem;
+      color: #7C5D80;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Slider input */
+    .progress-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 6px;
+      border-radius: 10px;
+      background: #FFC1CC; /* Soft Pink */
+      outline: none;
+      margin-top: 0.5rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    /* Slider thumb */
+    .progress-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #7C5D80; /* Dark Mauve */
+      cursor: pointer;
+      border-radius: 50%;
+      border: 2px solid #FFF;
+      transition: background 0.3s ease;
+      margin-top: -7px;
+      position: relative;
+      z-index: 2;
+    }
+    .progress-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #7C5D80;
+      cursor: pointer;
+      border-radius: 50%;
+      border: 2px solid #FFF;
+      transition: background 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      main {
+        margin-left: 0;
+        padding: 1rem;
+      }
+      .sidebar {
+        width: 200px;
+      }
+      .sidebar-toggle {
+        left: 210px;
+      }
+      .sidebar.closed + .sidebar-toggle {
+        left: 1rem;
+      }
+      .bookshelf {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar" id="sidebar">
+    <h2>My Library</h2>
+    <ul class="nav-list">
+      <li id="nav-home">
+        <a href="home.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 3.293l6 6V13a1 1 0 0 1-1 1h-3v-4H6v4H3a1 1 0 0 1-1-1v-3.707l6-6z"/>
+            <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6 6A1 1 0 0 1 14 9H2a1 1 0 0 1-.707-1.707l6-6z"/>
+          </svg>
+          Home
+        </a>
+      </li>
+      <li id="nav-bookshelf" class="active">
+        <a href="bookshelf.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M2 2v12h12V2H2zm11 11H3V3h10v10z"/>
+            <path d="M4 4h8v2H4V4z"/>
+            <path d="M4 7h8v2H4V7z"/>
+          </svg>
+          Bookshelf
+        </a>
+      </li>
+	  <li id="nav-to-read" class="active">
+        <a href="to-read.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M9 14V2h1v12H9z"/>
+            <path d="M5 12l7-4-7-4v8z"/>
+          </svg>
+          To Read
+        </a>
+      </li>
+<li id="nav-favourites" class="active">
+        <a href="favourites.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M3 8l5-3 5 3-5 3-5-3z"/>
+            <path d="M3 16V8l5 3 5-3v8H3z"/>
+          </svg>
+          Favourites
+        </a>
+      </li>
+<li id="nav-profile" class="active">
+        <a href="profile.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/><path d="M2 14s1-4 6-4 6 4 6 4H2z"/></svg>
+          Profile
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+  <main>
+    <h1>Your Bookshelf</h1>
+    <p>Track your progress on each book below. Use the sliders to update your reading percentage!</p>
+
+    <div class="bookshelf">
+      <!-- Book 1 -->
+      <div class="book" data-book-id="1">
+        <div class="book-image" title="Insert photo here">
+          📚
+        </div>
+        <div class="book-title">Book Title 1</div>
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+          <div class="progress-percentage">0%</div>
+          <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 1" />
+        </div>
+      </div>
+
+      <!-- Book 2 -->
+      <div class="book" data-book-id="2">
+        <div class="book-image" title="Insert photo here">
+          📖
+        </div>
+        <div class="book-title">Book Title 2</div>
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+          <div class="progress-percentage">0%</div>
+          <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 2" />
+        </div>
+      </div>
+
+      <!-- Book 3 -->
+      <div class="book" data-book-id="3">
+        <div class="book-image" title="Insert photo here">
+          📘
+        </div>
+        <div class="book-title">Book Title 3</div>
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+          <div class="progress-percentage">0%</div>
+          <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 3" />
+        </div>
+      </div>
+
+      <!-- Book 4 -->
+      <div class="book" data-book-id="4">
+        <div class="book-image" title="Insert photo here">
+          📗
+        </div>
+        <div class="book-title">Book Title 4</div>
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+          <div class="progress-percentage">0%</div>
+          <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 4" />
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Sidebar toggle logic (same as home page)
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('closed');
+      if(sidebar.classList.contains('closed')){
+        toggleBtn.textContent = '☰';
+      } else {
+        toggleBtn.textContent = '✕';
+      }
+    });
+
+    // Progress bar slider logic
+    const books = document.querySelectorAll('.book');
+
+    books.forEach(book => {
+      const slider = book.querySelector('.progress-slider');
+      const progressFill = book.querySelector('.progress-bar-fill');
+      const progressText = book.querySelector('.progress-percentage');
+
+      // Initialize progress fill on page load
+      progressFill.style.width = slider.value + '%';
+      progressText.textContent = slider.value + '%';
+
+      // Update progress bar and text on slider input
+      slider.addEventListener('input', () => {
+        progressFill.style.width = slider.value + '%';
+        progressText.textContent = slider.value + '%';
+      });
+    });
+
+    // Highlight active nav items based on current page (optional)
+    const navItems = sidebar.querySelectorAll('.nav-list li');
+    navItems.forEach(item => item.classList.remove('active'));
+
+    const navBookshelf = document.getElementById('nav-bookshelf');
+    if (navBookshelf) {
+      navBookshelf.classList.add('active');
+    }
+  </script>
+</body>
+</html>
