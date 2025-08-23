@@ -126,7 +126,46 @@
       flex-direction: column;
       align-items: center;
     }
+.sidebar-social {
+  position: absolute;    /* Fix it relative to sidebar */
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 10px 0;
+  background: transparent;
+  z-index: 50;
+}
 
+.social-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #d8d7f8;  /* Soft pastel background */
+  box-shadow: 0 2px 10px rgba(106, 93, 231, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #6a5de7;  /* Pastel purple on hover */
+  transform: scale(1.15);
+}
+
+.social-icon svg.icon {
+  width: 20px;
+  height: 20px;
+  fill: #6a5de7; /* icon color matching theme */
+  transition: fill 0.3s ease;
+}
+
+.social-icon:hover svg.icon {
+  fill: #fff;  /* icon color on hover */
+}
     .sidebar.closed ~ main {
       margin-left: 0;
     }
@@ -531,8 +570,27 @@
 <body>
   <nav class="sidebar" id="sidebar">
     <h2>My Library</h2>
-	
     <ul class="nav-list">
+		<!-- Sidebar Social Media Section -->
+<div class="sidebar-social">
+  <a href="https://facebook.com/yourprofile" target="_blank" aria-label="Facebook" class="social-icon facebook" rel="noopener noreferrer">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#6a5de7" class="icon">
+      <path d="M22 12a10 10 0 1 0-11.6 9.8v-6.9H8.9v-2.9h1.5V9.4c0-1.5.9-2.3 2.2-2.3.7 0 1.3.1 1.3.1v1.5h-.8c-.8 0-1 .5-1 1v1.2h1.7l-.3 2.9h-1.4v6.9A10 10 0 0 0 22 12z"/>
+    </svg>
+  </a>
+  
+  <a href="https://twitter.com/yourprofile" target="_blank" aria-label="Twitter" class="social-icon twitter" rel="noopener noreferrer">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#6a5de7" class="icon">
+      <path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.27 4.27 0 0 0 1.88-2.37 8.48 8.48 0 0 1-2.7 1.03 4.25 4.25 0 0 0-7.25 3.87A12.06 12.06 0 0 1 3.16 4.7a4.24 4.24 0 0 0 1.32 5.68 4.24 4.24 0 0 1-1.92-.53v.05a4.25 4.25 0 0 0 3.4 4.17 4.29 4.29 0 0 1-1.9.07 4.25 4.25 0 0 0 4 2.95 8.5 8.5 0 0 1-5.27 1.82A8.61 8.61 0 0 1 2 18.58a12.05 12.05 0 0 0 6.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.38-.01-.57A8.7 8.7 0 0 0 22.46 6z"/>
+    </svg>
+  </a>
+  
+  <a href="https://instagram.com/yourprofile" target="_blank" aria-label="Instagram" class="social-icon instagram" rel="noopener noreferrer">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#6a5de7" class="icon">
+      <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5a3.75 3.75 0 0 0 3.75-3.75v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5zm8.1 2.2a.9.9 0 1 1-1.801.001.9.9 0 0 1 1.801-.001zm-4.35 1.75a4.75 4.75 0 1 1 0 9.5 4.75 4.75 0 0 1 0-9.5zm0 2a2.75 2.75 0 1 0 0 5.5 2.75 2.75 0 0 0 0-5.5z"/>
+    </svg>
+  </a>
+</div>
       <li id="nav-home">
         <a href="index.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
@@ -759,6 +817,7 @@
 </script>
 </body>
 </html>
+
 
 
 
