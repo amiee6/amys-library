@@ -256,10 +256,6 @@
 <body>
   <nav class="sidebar" id="sidebar">
     <h2>My Library</h2>
-    <div class="search-container">
-  <input type="text" placeholder="Search books..." class="search-input" id="searchInput" />
-  <button class="search-button" onclick="searchFunction()">Search</button>
-</div>
     <ul class="nav-list">
             <li id="nav-index">
         <a href="index.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
@@ -313,7 +309,10 @@
   <main>
     <h1>Welcome to Your Fun Library!</h1>
     <p>Explore your collection, favorite reads, and exciting adventures with a dash of fun and colors.</p>
-
+<div class="search-container">
+  <input type="text" placeholder="Search books..." class="search-input" id="searchInput" />
+  <button class="search-button" onclick="searchFunction()">Search</button>
+</div>
     <div class="container-elements">
       <div class="box" title="Featured Book 1">
         <span>📖 Box 1</span>
@@ -362,5 +361,6 @@
 
 </body>
 </html>
+
 
 
