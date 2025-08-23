@@ -296,10 +296,15 @@
   <main>
     <h1>Welcome to Your Fun Library!</h1>
     <p>Explore your collection, favorite reads, and exciting adventures with a dash of fun and colors.</p>
-<div class="search-container">
-  <input type="text" placeholder="Search books..." class="search-input" id="searchInput" />
-  <button class="search-button" onclick="searchFunction()">Search</button>
-</div>
+<form class="search-form" onsubmit="return handleSearch(event)">
+  <input 
+    type="search" 
+    class="search-input" 
+    placeholder="Search books..." 
+    id="searchInput" 
+    required 
+  />
+</form>
     <div class="container-elements">
       <div class="box" title="Featured Book 1">
         <span>📖 Box 1</span>
@@ -348,6 +353,7 @@
 
 </body>
 </html>
+
 
 
 
