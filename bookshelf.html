@@ -168,6 +168,46 @@
   outline: none;
   transition: border-color 0.3s ease;
 }
+	  	  .genre-menu {
+  background-color: #F5F5F7; /* Soft light pastel background */
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 800px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.genre-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.genre-menu ul li {
+  display: inline;
+}
+
+.genre-menu ul li a {
+  text-decoration: none;
+  color: #6C63FF; /* Pastel purple */
+  font-weight: 600;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.genre-menu ul li a:hover,
+.genre-menu ul li a:focus {
+  background-color: #6C63FF;
+  color: #FFFFFF;
+  outline: none;
+}
     /* Bookshelf container */
     .bookshelf {
       display: grid;
@@ -322,76 +362,13 @@
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       }
     }
-	  .genre-menu {
-  background-color: #F5F5F7; /* Soft light pastel background */
-  padding: 10px 0;
-  text-align: center;
-  border-radius: 10px;
-  margin: 20px auto;
-  max-width: 800px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.genre-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-}
-
-.genre-menu ul li {
-  display: inline;
-}
-
-.genre-menu ul li a {
-  text-decoration: none;
-  color: #6C63FF; /* Pastel purple */
-  font-weight: 600;
-  padding: 8px 15px;
-  border-radius: 20px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.genre-menu ul li a:hover,
-.genre-menu ul li a:focus {
-  background-color: #6C63FF;
-  color: #FFFFFF;
-  outline: none;
-}
 
   </style>
 </head>
 <body>
   <nav class="sidebar" id="sidebar">
     <h2>My Library</h2>
-	  <nav class="genre-menu">
-  <ul>
-    <li><a href="#fantasy">Fantasy</a></li>
-    <li><a href="#romance">Romance</a></li>
-    <li><a href="#mystery">Mystery</a></li>
-    <li><a href="#nonfiction">Non-fiction</a></li>
-    <li><a href="#science-fiction">Sci-Fi</a></li>
-    <li><a href="#faith">Faith</a></li>
-    <li><a href="#poetry">Poetry</a></li>
-  </ul>
-		<header>
-  <h1>Book & Beyond</h1>
-  <p>Your cozy digital library</p>
-</header>
-
-<!-- Place genre menu here -->
-<nav class="genre-menu">
-  <!-- menu code from above -->
-</nav>
-
-<main>
-  <!-- Your bookshelf or content here -->
-</main>  
-</nav>
+	
     <ul class="nav-list">
       <li id="nav-home">
         <a href="index.html" style="color: inherit; text-decoration: none; display: flex; justify-content: center; align-items: center;">
@@ -451,6 +428,30 @@
     id="searchInput" 
     required 
   />
+	  <header>
+  <h1>Book & Beyond</h1>
+  <p>Your cozy digital library</p>
+</header>
+	    <nav class="genre-menu"> 
+	    <ul>
+    <li><a href="#fantasy">Fantasy</a></li>
+    <li><a href="#romance">Romance</a></li>
+    <li><a href="#mystery">Mystery</a></li>
+    <li><a href="#nonfiction">Non-fiction</a></li>
+    <li><a href="#science-fiction">Sci-Fi</a></li>
+    <li><a href="#faith">Faith</a></li>
+    <li><a href="#poetry">Poetry</a></li>
+  </ul>
+		</nav>
+
+<!-- Place genre menu here -->
+<nav class="genre-menu">
+  <!-- menu code from above -->
+</nav>
+
+<main>
+  <!-- Your bookshelf or content here -->
+</main> 
     <div class="bookshelf">
       <!-- Book 1 -->
       <div class="book" data-book-id="1">
@@ -466,53 +467,6 @@
           <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 1" />
         </div>
       </div>
-
-      <!-- Book 2 -->
-      <div class="book" data-book-id="2">
-        <div class="book-image" title="Insert photo here">
-          📖
-        </div>
-        <div class="book-title">Book Title 2</div>
-        <div class="progress-container">
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: 0%;"></div>
-          </div>
-          <div class="progress-percentage">0%</div>
-          <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 2" />
-        </div>
-      </div>
-
-      <!-- Book 3 -->
-      <div class="book" data-book-id="3">
-        <div class="book-image" title="Insert photo here">
-          📘
-        </div>
-        <div class="book-title">Book Title 3</div>
-        <div class="progress-container">
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: 0%;"></div>
-          </div>
-          <div class="progress-percentage">0%</div>
-          <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 3" />
-        </div>
-      </div>
-
-      <!-- Book 4 -->
-      <div class="book" data-book-id="4">
-        <div class="book-image" title="Insert photo here">
-          📗
-        </div>
-        <div class="book-title">Book Title 4</div>
-        <div class="progress-container">
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: 0%;"></div>
-          </div>
-          <div class="progress-percentage">0%</div>
-          <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 4" />
-        </div>
-      </div>
-    </div>
-  </main>
 
   <script>
     // Sidebar toggle logic (same as home page)
@@ -571,6 +525,7 @@
 </script>
 </body>
 </html>
+
 
 
 
