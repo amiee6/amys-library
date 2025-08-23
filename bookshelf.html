@@ -203,6 +203,174 @@
   color: #FFFFFF;
   outline: none;
 }
+	     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f7f7fb;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+  }
+
+  h1 {
+    color: #8a79f9;
+  }
+
+  /* Flower Container */
+  .flower-menu {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 40px auto 60px auto;
+    z-index: 10; /* ensure above other elements */
+  }
+
+  /* Center Circle */
+  .center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: #8a79f9;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+    user-select: none;
+    box-shadow: 0 4px 10px rgba(138, 121, 249, 0.6);
+  }
+
+  /* Petal Style */
+  .petal {
+    position: absolute;
+    width: 110px;
+    height: 150px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    font-size: 16px;
+    padding-top: 40px;
+    padding-left: 15px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
+  }
+  .petal span {
+    font-size: 14px;
+    padding: 10px 5px 5px 5px;
+    user-select: text;
+  }
+  .petal:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 15px rgba(138, 121, 249, 0.7);
+    z-index: 10;
+  }
+
+  /* Petal colors */
+  .fantasy { background: #a96dff; }
+  .romance { background: #ff6a90; }
+  .mystery { background: #6a9fff; }
+  .nonfiction { background: #6affc1; }
+  .scifi { background: #ffb76a; }
+  .faith { background: #ff6a5f; }
+  .poetry { background: #efaaff; }
+
+  /* Position petals evenly around the circle */
+  .petal:nth-child(2) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg) translate(160px) rotate(0deg);
+  }
+  .petal:nth-child(3) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(51deg) translate(160px) rotate(-51deg);
+  }
+  .petal:nth-child(4) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(102deg) translate(160px) rotate(-102deg);
+  }
+  .petal:nth-child(5) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(153deg) translate(160px) rotate(-153deg);
+  }
+  .petal:nth-child(6) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(204deg) translate(160px) rotate(-204deg);
+  }
+  .petal:nth-child(7) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(255deg) translate(160px) rotate(-255deg);
+  }
+  .petal:nth-child(8) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(306deg) translate(160px) rotate(-306deg);
+  }
+
+  /* Book list popup styled as tooltip */
+  #book-list {
+    position: fixed;  /* changed to fixed to work relative to viewport */
+    min-width: 220px;
+    max-width: 280px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.2);
+    padding: 15px 20px;
+    font-size: 18px;
+    box-sizing: border-box;
+    z-index: 9999; /* much higher z-index */
+    display: none; /* hidden by default */
+  }
+
+  #book-list h2 {
+    color: #8a79f9;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 22px;
+  }
+
+  #book-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #book-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  #book-list li:last-child {
+    border-bottom: none;
+  }
+
+  #book-list a {
+    color: #6a5de7;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  #book-list a:hover,
+  #book-list a:focus {
+    color: #3e36c4;
+    text-decoration: underline;
+  }
     /* Bookshelf container */
     .bookshelf {
       display: grid;
@@ -423,43 +591,41 @@
     id="searchInput" 
     required 
   /> 
-</br>
-	    <nav class="genre-menu"> 
-	    <ul>
-    <li><a href="#fantasy">Fantasy</a></li>
-    <li><a href="#romance">Romance</a></li>
-    <li><a href="#mystery">Mystery</a></li>
-    <li><a href="#nonfiction">Non-fiction</a></li>
-    <li><a href="#science-fiction">Sci-Fi</a></li>
-    <li><a href="#faith">Faith</a></li>
-    <li><a href="#poetry">Poetry</a></li>
-  </ul>
-		</nav>
+<div class="flower-menu" role="navigation" aria-label="Genre menu">
+  <div class="center-circle" aria-hidden="true">Genres</div>
+  <button class="petal fantasy" onclick="showBooks('Fantasy', event)" aria-label="Fantasy genre petal">
+    Fantasy
+    <span>✨ Explore magic & adventure</span>
+  </button>
+  <button class="petal romance" onclick="showBooks('Romance', event)" aria-label="Romance genre petal">
+    Romance
+    <span>❤️ Stories of love and heart</span>
+  </button>
+  <button class="petal mystery" onclick="showBooks('Mystery', event)" aria-label="Mystery genre petal">
+    Mystery
+    <span>🕵️‍♀️ Secrets and suspense</span>
+  </button>
+  <button class="petal nonfiction" onclick="showBooks('Non-fiction', event)" aria-label="Non-fiction genre petal">
+    Non-fiction
+    <span>📚 Real stories and facts</span>
+  </button>
+  <button class="petal scifi" onclick="showBooks('Sci-Fi', event)" aria-label="Sci-Fi genre petal">
+    Sci-Fi
+    <span>🚀 Futuristic stories & tech</span>
+  </button>
+  <button class="petal faith" onclick="showBooks('Faith', event)" aria-label="Faith genre petal">
+    Faith
+    <span>🙏 Spiritual and uplifting</span>
+  </button>
+  <button class="petal poetry" onclick="showBooks('Poetry', event)" aria-label="Poetry genre petal">
+    Poetry
+    <span>🌸 Words & rhythms</span>
+  </button>
+</div>
 
-<!-- Place genre menu here -->
-<nav class="genre-menu">
-  <!-- menu code from above -->
-</nav>
-
-<main>
-  <!-- Your bookshelf or content here -->
-</main> 
-    <div class="bookshelf">
-      <!-- Book 1 -->
-      <div class="book" data-book-id="1">
-        <div class="book-image" title="Insert photo here">
-          📚
-        </div>
-        <div class="book-title">Book Title 1</div>
-        <div class="progress-container">
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: 0%;"></div>
-          </div>
-          <div class="progress-percentage">0%</div>
-          <input type="range" min="0" max="100" value="0" class="progress-slider" aria-label="Progress slider for Book 1" />
-        </div>
-      </div>
-
+<div id="book-list" aria-live="polite" aria-atomic="true">
+  <p>Click a genre to see books here.</p>
+</div>
   <script>
     // Sidebar toggle logic (same as home page)
     const sidebar = document.getElementById('sidebar');
@@ -515,8 +681,85 @@
     return false;  // Stops default form submit
   }
 </script>
+		<script>
+  const booksByGenre = {
+    Fantasy: [
+      {title: "The Enchanted Forest", url: "books/fantasy1.html"},
+      {title: "Dragon's Quest", url: "books/fantasy2.html"},
+    ],
+    Romance: [
+      {title: "Love in Paris", url: "books/romance1.html"},
+      {title: "The Heart's Secret", url: "books/romance2.html"},
+    ],
+    Mystery: [
+      {title: "The Silent Clue", url: "books/mystery1.html"},
+      {title: "Shadows of Truth", url: "books/mystery2.html"},
+    ],
+    'Non-fiction': [
+      {title: "Discovering History", url: "books/nonfiction1.html"},
+      {title: "The Science Explained", url: "books/nonfiction2.html"},
+    ],
+    'Sci-Fi': [
+      {title: "Beyond the Stars", url: "books/scifi1.html"},
+      {title: "Techno Dreams", url: "books/scifi2.html"},
+    ],
+    Faith: [
+      {title: "Path to Light", url: "books/faith1.html"},
+      {title: "Faith and Hope", url: "books/faith2.html"},
+    ],
+    Poetry: [
+      {title: "Whispers of the Wind", url: "books/poetry1.html"},
+      {title: "Rhythms of the Heart", url: "books/poetry2.html"},
+    ],
+  };
+
+  function showBooks(genre, event) {
+    const bookListDiv = document.getElementById('book-list');
+    const books = booksByGenre[genre] || [];
+    if (!books.length) {
+      bookListDiv.innerHTML = `<p>No books available for ${genre} yet.</p>`;
+    } else {
+      let html = `<h2>${genre} Books</h2><ul>`;
+      books.forEach(book => {
+        html += `<li><a href="${book.url}" target="_blank" rel="noopener noreferrer">${book.title}</a></li>`;
+      });
+      html += '</ul>';
+      bookListDiv.innerHTML = html;
+    }
+
+    // Get click target position relative to viewport
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    // Show popup exactly centered horizontally and just above petal
+    let top = rect.top - bookListDiv.offsetHeight - 12;  // 12px padding above petal
+    let left = rect.left + (rect.width / 2) - (bookListDiv.offsetWidth / 2);
+
+    // Prevent overflowing viewport on left/right
+    top = Math.max(top, 8);
+    left = Math.min(Math.max(left, 8), window.innerWidth - bookListDiv.offsetWidth - 8);
+
+    bookListDiv.style.position = 'fixed';
+    bookListDiv.style.top = `${top}px`;
+    bookListDiv.style.left = `${left}px`;
+    bookListDiv.style.display = 'block';
+
+    event.stopPropagation();
+  }
+
+  // Hide popup on clicking outside
+  document.addEventListener('click', function(event) {
+    const bookListDiv = document.getElementById('book-list');
+    if (bookListDiv.style.display === 'block') {
+      const flowerMenu = document.querySelector('.flower-menu');
+      if (!flowerMenu.contains(event.target)) {
+        bookListDiv.style.display = 'none';
+      }
+    }
+  });
+</script>
 </body>
 </html>
+
 
 
 
